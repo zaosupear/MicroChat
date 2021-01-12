@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link href="css/header.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+		mui.plusReady(function(){
+			plus.navigator.setStatusBarStyle("dark");
+			plus.navigator.setStatusBarBackground("#F7F7F7");
+		});
+    </script>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav title">
+	    <h1 class="mui-title title-color"><b>微信</b></h1>
+	</header>
+	<nav class="mui-bar mui-bar-tab">
+	    <a class="mui-tab-item mui-active" tabindex="0">
+	        <span class="mui-icon mui-icon-weixin"></span>
+	        <span class="mui-tab-label">微信</span>
+	    </a>
+	    <a class="mui-tab-item" tabindex="1">
+	        <span class="mui-icon mui-icon-contact"></span>
+	        <span class="mui-tab-label">通信录</span>
+	    </a>
+	    <a class="mui-tab-item" tabindex="2">
+	        <span class="mui-icon mui-icon-paperplane"></span>
+	        <span class="mui-tab-label">发现</span>
+	    </a>
+	    <a class="mui-tab-item" tabindex="3">
+	        <span class="mui-icon mui-icon-person"></span>
+	        <span class="mui-tab-label">我</span>
+	    </a>
+	</nav>
+	<script type="application/javascript">
+		var pageArray = [
+			{
+				pageId: 'chat',
+				pageUrl: 'chat.html'
+			},
+			{
+				pageId: 'contact',
+				pageUrl: 'contact.html'
+			},
+			{
+				pageId: 'discovery',
+				pageUrl: 'discovery.html'
+			},
+			{
+				pageId: 'account',
+				pageUrl: 'account.html'
+			},
+		];
+		
+		var pageStyle = {
+			top: "44px",
+			bottom: "95px"
+		}
+		
+		mui.plusReady(function(){
+			var currentWebview = plus.webview.currentWebview();
+			for(var i=0;i<pageArray.length;i++){
+				var currentPage = pageArray[i];
+				var createdPage = plus.webview.create(currentPage.pageUrl, currentPage.pageId, pageStyle);
+				createdPage.hide();
+				currentWebview.append(createdPage);
+			}
+			plus.webview.show(pageArray[0].pageId);
+			mui('.mui-bar-tab').on('tap', 'a', function(){
+				var tabindex = this.getAttribute('tabindex');
+				plus.webview.show(pageArray[tabindex].pageId, 'fade-in', 200);
+				for(var i=0;i<pageArray.length;i++){
+					if(i != tabindex){
+						plus.webview.hide(pageArray[i].pageId, 'fade-out', 200);
+					}
+				}	
+			});
+		});
+	</script>
+</body>
+</html>
